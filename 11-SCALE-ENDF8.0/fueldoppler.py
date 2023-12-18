@@ -1,0 +1,136 @@
+#!/bin/env python3
+
+import os
+import numpy as np
+
+def tempK(tempC: float) -> float:
+    return tempC + 273.15
+
+
+def tempC(tempK: float) -> float:
+    return tempK - 273.15
+
+
+for salt_tempC in np.linspace(500, 700, 21):
+    deckpath = f'FTC_{salt_tempC:5.01f}'
+    if not os.path.isdir(deckpath):
+        os.mkdir(deckpath)
+    os.chdir(deckpath)
+    T = tempK(salt_tempC)
+    keno_deck = f'''=csas6 parm=(   )
+MCRE
+ce_v8.0
+
+read parm
+    npg=200000
+    gen=2510
+    nsk=10
+    plt=no
+    run=yes
+    htm=no
+    fdn=no
+    pmv=no
+    flx=no
+    mfx=no
+    pms=no
+    pnu=no
+end parm
+
+read bounds
+    all=vac
+end bounds
+read comp
+
+' 2 NacCl - 1 UCl3
+atomNaClUCl3 1 3.164 3
+         11000 2
+         17000 5
+         92000 1
+         1.0 {T}
+         17037 99.9 17035 0.1
+         92234 1.0 92235 93.0 92238 6.0 end
+
+'% MgO reflector
+'mat refl -2.8800000000000003 tmp 873.0 rgb 75 75 75
+' 12024.06c 1.0
+' 8016.06c 1.0
+'-------------------------------------------------------------------
+' Nuclide    a. weight   temp      a. dens      a. frac      m. frac
+'-------------------------------------------------------------------
+' 12024.06c   23.98504  873.0  4.33804E-02  5.00000E-01  5.99927E-01
+'  8016.06c   15.99492  873.0  4.33804E-02  5.00000E-01  4.00073E-01
+o-16 2 0 4.33804E-02 873 end
+mg-24 2 0 4.33804E-02 873 end
+
+
+'Material:ReactorSteel Number:6'
+c 6 0 0.0002384 873 end
+n-14 6 0 0.000254609 873 end
+n-15 6 0 9.30164e-07 873 end
+al-27 6 0 5.30544e-05 873 end
+si-28 6 0 1.56475e-05 873 end
+si-29 6 0 7.94907e-07 873 end
+si-30 6 0 5.24622e-07 873 end
+p-31 6 0 6.93324e-05 873 end
+s-32 6 0 4.23788e-05 873 end
+s-33 6 0 3.34604e-07 873 end
+s-34 6 0 1.89609e-06 873 end
+s-36 6 0 4.46139e-09 873 end
+ti-46 6 0 3.28985e-06 873 end
+ti-47 6 0 2.96684e-06 873 end
+ti-48 6 0 2.93973e-05 873 end
+ti-49 6 0 2.15734e-06 873 end
+ti-50 6 0 2.06562e-06 873 end
+cr-50 6 0 0.000677912 873 end
+cr-52 6 0 0.0130729 873 end
+cr-53 6 0 0.00148236 873 end
+cr-54 6 0 0.00036899 873 end
+mn-55 6 0 1.73977e-05 873 end
+fe-54 6 0 0.00390032 873 end
+fe-56 6 0 0.0612267 873 end
+fe-57 6 0 0.00141399 873 end
+fe-58 6 0 0.000188176 873 end
+ni-58 6 0 6.64309e-05 873 end
+ni-60 6 0 2.55891e-05 873 end
+ni-61 6 0 1.11234e-06 873 end
+ni-62 6 0 3.54662e-06 873 end
+ni-64 6 0 9.03221e-07 873 end
+mo-92 6 0 0.00018364 873 end
+mo-94 6 0 0.00011476 873 end
+mo-95 6 0 0.00019769 873 end
+mo-96 6 0 0.000207388 873 end
+mo-97 6 0 0.000118863 873 end
+mo-98 6 0 0.000300762 873 end
+mo-100 6 0 0.00012023 873 end
+
+
+end comp
+
+
+read geometry
+
+global unit 1
+  zcylinder 1 50.0 95.0 -95.0
+  zcylinder 2 52.0 97.0 -97.0
+  media 1 1  1
+  media 2 1  2 -1
+boundary 2
+
+end geometry
+
+
+end data
+end
+'''
+
+
+
+    fout = open("MCRE.inp", "w")  # Dump deck into file
+    fout.write(keno_deck)
+    fout.close()
+
+    os.system('qsub ../../runScale.sh')  # Submit job
+
+    os.chdir('..')
+
+
