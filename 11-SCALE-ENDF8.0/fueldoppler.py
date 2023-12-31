@@ -1,7 +1,14 @@
 #!/bin/env python3
+#
+# Fuel Doppler for MCRE, 93% HEU heu fuel, ENDF-8.1
+#
+# Ondrej Chvala <ochvala@utexas.edu>
+#
+# MIT license
 
 import os
 import numpy as np
+
 
 def tempK(tempC: float) -> float:
     return tempC + 273.15
@@ -61,34 +68,21 @@ atomNaClUCl3 1 3.164 3
 '  8016.06c   15.99492  873.0  4.33804E-02  5.00000E-01  4.00073E-01
 o-16 2 0 4.33804E-02 873 end
 mg-24 2 0 4.33804E-02 873 end
-
 end comp
 
-
 read geometry
-
 global unit 1
   zcylinder 1 50.0 95.0 -95.0
   zcylinder 2 52.0 97.0 -97.0
   media 1 1  1
   media 2 1  2 -1
 boundary 2
-
 end geometry
-
-
 end data
 end
 '''
-
-
-
     fout = open("MCRE.inp", "w")  # Dump deck into file
     fout.write(keno_deck)
     fout.close()
-
     os.system('qsub ../../runScale.sh')  # Submit job
-
     os.chdir('..')
-
-

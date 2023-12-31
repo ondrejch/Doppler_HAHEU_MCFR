@@ -9,6 +9,7 @@
 import os
 import numpy as np
 
+
 def tempK(tempC: float) -> float:
     return tempC + 273.15
 
@@ -16,26 +17,27 @@ def tempK(tempC: float) -> float:
 def tempC(tempK: float) -> float:
     return tempK - 273.15
 
-salt_tempC:float = 600.0
 
-for enr in np.linspace(.20, .95, 16):   # Run for these enrichments
+salt_tempC: float = 600.0
+
+for enr in np.linspace(.20, .95, 16):  # Run for these enrichments
     deckpath = f'E_{enr:.6f}'
     if not os.path.isdir(deckpath):
         os.mkdir(deckpath)
     os.chdir(deckpath)
     T = tempK(salt_tempC)
-    r0:float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
+    r0: float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
 
-    for r_scale in np.linspace(.5, 1.5, 9): # Scaled radius gueses
-        r:float = r0 * r_scale  # radius used in the model [cm]
-        h:float = 1.9 * r  # half-heigth of fuel cyl [cm]
+    for r_scale in np.linspace(.5, 1.5, 9):  # Scaled radius gueses
+        r: float = r0 * r_scale  # radius used in the model [cm]
+        h: float = 1.9 * r  # half-heigth of fuel cyl [cm]
         deckpath = f'R_{r_scale:.6f}/'
         if not os.path.isdir(deckpath):
             os.mkdir(deckpath)
         os.chdir(deckpath)
-        wf_u234:float = 0.0089 * enr    # uranium isotope weight fractions
-        wf_u236:float = 0.0046 * enr
-        wf_u238:float = 1.0 - (wf_u234 + enr + wf_u236)
+        wf_u234: float = 0.0089 * enr  # uranium isotope weight fractions
+        wf_u236: float = 0.0046 * enr
+        wf_u238: float = 1.0 - (wf_u234 + enr + wf_u236)
         keno_deck = f'''=csas6 parm=(   )
 MCRE
 ce_v7.1
@@ -80,7 +82,7 @@ end comp
 read geometry
 global unit 1
   zcylinder 1 {r}  {h} -{h}
-  zcylinder 2 {r+2.0} {h+2.0} -{h+2.0}
+  zcylinder 2 {r + 2.0} {h + 2.0} -{h + 2.0}
   media 1 1  1
   media 2 1  2 -1
 boundary 2
@@ -92,10 +94,6 @@ end
         fout = open("MCRE.inp", "w")  # Dump deck into file
         fout.write(keno_deck)
         fout.close()
-
         os.system('qsub ../../runScale.sh')  # Submit job
-
         os.chdir('..')
     os.chdir('..')
-
-

@@ -11,8 +11,9 @@ import numpy as np
 import json5
 
 # Load data from criticality search
-with open("r_k1s.json",'r') as f:
+with open("r_k1s.json", 'r') as f:
     r_k1_dict = json5.load(f)
+
 
 def tempK(tempC: float) -> float:
     return tempC + 273.15
@@ -28,13 +29,13 @@ for enr in np.linspace(.20, .95, 16):
         os.mkdir(deckpath)
     os.chdir(deckpath)
 
-    r0:float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
-    r_scale:float = r_k1_dict[f'{enr:.8f}']
-    r:float = r0 * r_scale
-    h:float = 1.9 * r  # half-heigth of fuel cyl [cm]
-    wf_u234:float = 0.0089 * enr
-    wf_u236:float = 0.0046 * enr
-    wf_u238:float = 1.0 - (wf_u234 + enr + wf_u236)
+    r0: float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
+    r_scale: float = r_k1_dict[f'{enr:.8f}']
+    r: float = r0 * r_scale
+    h: float = 1.9 * r  # half-heigth of fuel cyl [cm]
+    wf_u234: float = 0.0089 * enr
+    wf_u236: float = 0.0046 * enr
+    wf_u238: float = 1.0 - (wf_u234 + enr + wf_u236)
     for salt_tempC in np.linspace(500, 700, 21):
         deckpath = f'FTC_{salt_tempC:5.01f}'
         if not os.path.isdir(deckpath):
@@ -85,7 +86,7 @@ end comp
 read geometry
 global unit 1
   zcylinder 1 {r}  {h} -{h}
-  zcylinder 2 {r+2.0} {h+2.0} -{h+2.0}
+  zcylinder 2 {r + 2.0} {h + 2.0} -{h + 2.0}
   media 1 1  1
   media 2 1  2 -1
 boundary 2
@@ -97,11 +98,6 @@ end
         fout = open("MCRE.inp", "w")  # Dump deck into file
         fout.write(keno_deck)
         fout.close()
-
         os.system('qsub ../../runScale.sh')  # Submit job
-
         os.chdir('..')
     os.chdir('..')
-
-
-
