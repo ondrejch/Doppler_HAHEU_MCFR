@@ -1,6 +1,6 @@
 #!/bin/env python3
 #
-# Criticality search for MCRE with different HEU levels
+# Criticality search for MCRE with different HEU levels - post processing
 #
 # Ondrej Chvala <ochvala@utexas.edu>
 #
@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json5
 
-do_fit: bool = True #False
+do_plots: bool = True
 
 def tempK(tempC: float) -> float:
     return tempC + 273.15
@@ -46,7 +46,7 @@ for enr in np.linspace(.20, .95, 16):
         wf_u234:float = 0.0089 * enr
         wf_u236:float = 0.0046 * enr
         wf_u238:float = 1.0 - (wf_u234 + enr + wf_u236)
-        with open("MCRE.out", "r") as f:
+        with open("MCRE.out", "r") as f:  # Get k_eff
             d = f.read()
         (k, kerr) = re.findall(r"best estimate system k-eff\s+([\d.]+) \+ or \- ([\d.]+)",d)[0]
         keff_array = np.append(keff_array, float(k))
@@ -66,12 +66,12 @@ for enr in np.linspace(.20, .95, 16):
 
     r_k1_dict[f'{enr:.8f}'] = r_k1
 
-    fout = open("data_enr.json",'w')
+    fout = open("data_enr.json",'w') # Write relevant data for each enrichment
     fout.write(json5.dumps({'r_scale': r_scale_array.tolist(), 'k': keff_array.tolist(),
                             'kerr': keff_error_array.tolist(), 'r_k1': r_k1 }, indent=4 ))
     fout.close()
 
-    if do_fit:
+    if do_plots:    # Make nice plots
         trend, trend_error = np.polyfit(r_scale_array, keff_array,
                                         deg=4, cov=True, w = 1.0 / keff_error_array)
         trend_error = np.sqrt(np.diag(trend_error))
@@ -93,6 +93,7 @@ for enr in np.linspace(.20, .95, 16):
     print(f'k=1 at  {r_k1:.6f}\n')
     os.chdir('..')
 
+# Write output data used for the Fuel-Doppler runs
 with open("r_k1s.json",'w') as fout:
     fout.write(json5.dumps(r_k1_dict, indent=4))
 

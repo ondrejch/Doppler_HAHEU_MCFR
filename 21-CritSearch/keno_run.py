@@ -18,7 +18,7 @@ def tempC(tempK: float) -> float:
 
 salt_tempC:float = 600.0
 
-for enr in np.linspace(.20, .95, 16):
+for enr in np.linspace(.20, .95, 16):   # Run for these enrichments
     deckpath = f'E_{enr:.6f}'
     if not os.path.isdir(deckpath):
         os.mkdir(deckpath)
@@ -26,14 +26,14 @@ for enr in np.linspace(.20, .95, 16):
     T = tempK(salt_tempC)
     r0:float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
 
-    for r_scale in np.linspace(.5, 1.5, 9):
-        r:float = r0 * r_scale
+    for r_scale in np.linspace(.5, 1.5, 9): # Scaled radius gueses
+        r:float = r0 * r_scale  # radius used in the model [cm]
         h:float = 1.9 * r  # half-heigth of fuel cyl [cm]
         deckpath = f'R_{r_scale:.6f}/'
         if not os.path.isdir(deckpath):
             os.mkdir(deckpath)
         os.chdir(deckpath)
-        wf_u234:float = 0.0089 * enr
+        wf_u234:float = 0.0089 * enr    # uranium isotope weight fractions
         wf_u236:float = 0.0046 * enr
         wf_u238:float = 1.0 - (wf_u234 + enr + wf_u236)
         keno_deck = f'''=csas6 parm=(   )
