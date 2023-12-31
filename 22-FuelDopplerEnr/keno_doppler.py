@@ -32,7 +32,7 @@ for enr in np.linspace(.20, .95, 16):
     r0: float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
     r_scale: float = r_k1_dict[f'{enr:.8f}']
     r: float = r0 * r_scale
-    h: float = 1.9 * r  # half-heigth of fuel cyl [cm]
+    h: float = 1.9 * r  # half-height of fuel cyl [cm]
     wf_u234: float = 0.0089 * enr
     wf_u236: float = 0.0046 * enr
     wf_u238: float = 1.0 - (wf_u234 + enr + wf_u236)

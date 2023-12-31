@@ -28,9 +28,9 @@ for enr in np.linspace(.20, .95, 16):  # Run for these enrichments
     T = tempK(salt_tempC)
     r0: float = 46.5 / enr  # radius of fuel cyl [cm], 50cm at 93% HEU
 
-    for r_scale in np.linspace(.5, 1.5, 9):  # Scaled radius gueses
+    for r_scale in np.linspace(.5, 1.5, 9):  # Scaled radius guesses
         r: float = r0 * r_scale  # radius used in the model [cm]
-        h: float = 1.9 * r  # half-heigth of fuel cyl [cm]
+        h: float = 1.9 * r  # half-height of fuel cyl [cm]
         deckpath = f'R_{r_scale:.6f}/'
         if not os.path.isdir(deckpath):
             os.mkdir(deckpath)

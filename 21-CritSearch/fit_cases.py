@@ -25,7 +25,7 @@ def tempC(tempK: float) -> float:
 
 salt_tempC: float = 600.0
 
-num_x = 100
+num_x: int = 100
 line_x = np.linspace(.5, 1.5, num_x)
 
 r_k1_dict = {}
@@ -42,7 +42,7 @@ for enr in np.linspace(.20, .95, 16):
 
     for r_scale in np.linspace(.5, 1.5, 9):
         r: float = r0 * r_scale
-        h: float = 1.9 * r  # half-heigth of fuel cyl [cm]
+        h: float = 1.9 * r  # half-height of fuel cyl [cm]
         deckpath = f'R_{r_scale:.6f}/'
         os.chdir(deckpath)
         wf_u234: float = 0.0089 * enr
