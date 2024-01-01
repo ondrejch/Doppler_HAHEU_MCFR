@@ -94,10 +94,14 @@ with open("coefs_fuel_doppler.json") as f:
 """
 
 enr_array = np.array(list(coefs_fdopp.keys()), dtype=float) * 100.0
+#line_x = np.linspace(min(enr_array), max(enr_array), num_x)
+line_x = np.linspace(18, 97, num_x)
+line_0 = line_x * 0.0
 fueldopp_array = np.array([x[0] for x in coefs_fdopp.values()])
 fueldopp_error_array = np.array([x[1] for x in coefs_fdopp.values()])
 
 plt.plot(enr_array, fueldopp_array, 'd', linewidth=0.2, color='#1B2ACC')
+plt.plot(line_x, line_0, 'k-', linewidth=0.4, ls='dotted')
 plt.fill_between(enr_array, fueldopp_array - fueldopp_error_array,
                  fueldopp_array + fueldopp_error_array,
                  alpha=0.2, edgecolor='#1B2ACC', facecolor='#089FFF',
