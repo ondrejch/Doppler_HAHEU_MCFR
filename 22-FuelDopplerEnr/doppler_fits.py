@@ -57,8 +57,8 @@ for enr in np.linspace(.20, .95, 16):
     trend, trend_error = np.polyfit(temp_array, reactivity_array, deg=1, cov=True, w=1.0 / reactivity_error_array)
     trend_error = np.sqrt(np.diag(trend_error))
     trend_poly = np.poly1d(trend)
-    print(f'Fit: y = ({trend[0]:.2E} +/- {trend_error[0]:.2E}) x + ({trend[1]:.2E} +/- {trend_error[1]:.2E})',
-          f'Fuel Doppler: {trend[0]:.3f} +/- {trend_error[0]:.3f} pcm/K\n')
+    print(f'Fit: y = ({trend[0]:.2E} ± {trend_error[0]:.2E}) x + ({trend[1]:.2E} ± {trend_error[1]:.2E})',
+          f'Fuel Doppler: {trend[0]:.3f} ± {trend_error[0]:.3f} pcm/K\n')
 
     coefs_fdopp[f'{enr:.8f}'] = (trend[0], trend_error[0])
     fout = open("fdopp_enr.json", 'w')  # Write relevant data for each enrichment
