@@ -1,12 +1,11 @@
-set title "cylMCFR radius 50, height 190, reflector_t 2" 
-% 2023-12-11 11:38:55.338634 c459a9f8a700ddc8789d9947295fcdbffda1ab7f
+set title "cylMCFR radius 50, height 190, reflector_t 200" 
 %______________surface definitions__________________________________
 surf 1  cylz  0.0 0.0 50       % fuel salt
-surf 2  cylz  0.0 0.0 52       % radial reflector
+surf 2  cylz  0.0 0.0 250      % radial reflector
 surf 3  pz    190              % fuel top
-surf 4  pz    0                  % fuel bottom
-surf 5  pz    192              % refl top
-surf 6  pz    -2.0              % refl bottom
+surf 4  pz    0                % fuel bottom
+surf 5  pz    390              % refl top
+surf 6  pz    -200.0           % refl bottom
 
 %______________cell definitions_____________________________________
 cell 30  0  refl       1 -2 -3  4        % radial reflector

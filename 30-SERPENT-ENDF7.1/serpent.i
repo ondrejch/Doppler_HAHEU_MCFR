@@ -35,7 +35,7 @@ set mvol fuelsalt 0 2984513.0209103036  % Fuel salt volume
 set bc 1  % Boundary condition, vacuum 
 set gcu -1 
 set power 150000.0  % Power, W
-set pop 10000 200 20  % N pop and criticality cycles
+set pop 200000 2500 10  % N pop and criticality cycles
 
 branch 773.15 stp fuelsalt -3.164 773.15
 branch 783.15 stp fuelsalt -3.164 783.15
@@ -58,6 +58,9 @@ branch 943.15 stp fuelsalt -3.164 943.15
 branch 953.15 stp fuelsalt -3.164 953.15
 branch 963.15 stp fuelsalt -3.164 963.15
 branch 973.15 stp fuelsalt -3.164 973.15
+
+coef 1 0  % one burnup point, BOC
+ 21 773.15 783.15 793.15 803.15 813.15 823.15 833.15 843.15 853.15 863.15 873.15 883.15 893.15 903.15 913.15 923.15 933.15 943.15 953.15 963.15 973.15
 
 % Data Libraries
 set acelib "/opt/serpent/xsdata/sss_endfb7u.xsdata"

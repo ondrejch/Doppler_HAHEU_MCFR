@@ -11,3 +11,5 @@ All done in SCALE/KENO 6.3.1 or Serpent 2.
 * **22-FuelDopplerEnr**   - Fuel Doppler as a function of enrichment, ENDF-B/VII.I in SCALE
 * **30-SERPENT-ENDF7.1**  - MCRE-like with ENDF-B/VII.I in Serpent
 * **31-SERPENT-ENDF8.0**  - MCRE-like with ENDF-B/VIII.0 in Serpent
+* **32-SERPENT-ENDF7.1-large-reflector**  - MCRE-like with 2m reflector with ENDF-B/VII.I in Serpent
+* **33-SERPENT-ENDF8.0-large-reflector**  - MCRE-like with 2m reflector with ENDF-B/VIII.0 in Serpent
